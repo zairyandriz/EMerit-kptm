@@ -1,4 +1,4 @@
-		<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
@@ -593,6 +593,43 @@
     color: var(--gold);
     font-family: 'Space Mono', monospace;
   }
+  .up-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .up-countdown {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: 'Space Mono', monospace;
+  }
+  .up-countdown.urgent { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+  .up-countdown.soon { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: var(--gold); }
+  .up-countdown.normal { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: var(--green); }
+  .up-countdown.closed { background: rgba(107,135,184,0.12); border: 1px solid rgba(107,135,184,0.2); color: var(--muted); }
+  .up-form-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .up-form-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+  .up-form-btn.closed-btn { background: rgba(107,135,184,0.15); color: var(--muted); pointer-events: none; }
 
   /* FOOTER */
   footer {
@@ -658,7 +695,7 @@
   <div class="search-box">
     <label class="search-label" id="lbl-id">Nombor ID Pelajar</label>
     <div class="input-row">
-      <input class="id-input" id="studentId" type="text" placeholder="cth: BGJ2425000" maxlength="15" onkeydown="if(event.key==='Enter') search()"/>
+      <input class="id-input" id="studentId" type="text" placeholder="cth: KPTM2024001" maxlength="15" onkeydown="if(event.key==='Enter') search()"/>
       <button class="search-btn" onclick="search()" id="btn-search">↵ CARI</button>
     </div>
   </div>
@@ -849,15 +886,80 @@ function applyLang() {
 // ─── API URL ─────────────────────────────────────────────
 const API_URL = 'https://script.google.com/macros/s/AKfycbxTKKA-q375Flu1wcjrcMzFM7_UsiWgrOyXTHkDOrm8CQlbjpeGnpU5p6gjVP2ecI1g/exec';
 
-// ─── UPCOMING (Edit ini untuk tambah program akan datang) ─
+// ─── UPCOMING ─────────────────────────────────────────────
+// Cara tambah program baru:
+// 1. Salin satu blok { ... } di bawah
+// 2. Tukar nama, tarikh, pts, formLink, daftarHingga
+// 3. daftarHingga: format 'YYYY-MM-DD' — tarikh tutup pendaftaran
+//    Letak null kalau tiada tarikh tutup
+// 4. formLink: link Google Form — letak null kalau tiada form
+// level: 'kolej' / 'negeri' / 'kebangsaan' / 'antarabangsa'
 const UPCOMING = [
-  { level: 'kolej', lvlLabel: { ms: 'Peringkat Kolej', en: 'College Level' }, name: { ms: 'KK Graduation Night 2026', en: 'Graduation Night 2026' }, date: '26 Mei 2026', pts: 5 },
-  { level: 'kolej', lvlLabel: { ms: 'Peringkat Kolej', en: 'College Level' }, name: { ms: 'Piala Debat KPTM Bangi', en: 'KPTM Bangi Debate Cup' }, date: 'Jun 2026', pts: 5 },
-  { level: 'negeri', lvlLabel: { ms: 'Peringkat Negeri', en: 'State Level' }, name: { ms: 'SRN – Lawatan Plak Monumen Rukun Negara', en: 'SRN – Rukun Negara Monument Visit' }, date: 'Jun 2026', pts: 8 },
-  { level: 'kebangsaan', lvlLabel: { ms: 'Peringkat Kebangsaan', en: 'National Level' }, name: { ms: 'Konvensyen Pelajar KPTM Kebangsaan', en: 'KPTM National Student Convention' }, date: 'Jul 2026', pts: 12 },
-  { level: 'antarabangsa', lvlLabel: { ms: 'Peringkat Antarabangsa', en: 'International Level' }, name: { ms: 'ASEAN Polytechnic Seminar 2026', en: 'ASEAN Polytechnic Seminar 2026' }, date: 'Ogos 2026', pts: 20 },
-  { level: 'kolej', lvlLabel: { ms: 'Peringkat Kolej', en: 'College Level' }, name: { ms: 'Ceramah Keselamatan Peribadi', en: 'Personal Safety Talk' }, date: 'Mei 2026', pts: 3 },
+  {
+    level: 'kolej',
+    lvlLabel: { ms: 'Peringkat Kolej', en: 'College Level' },
+    name: { ms: 'Graduation Night 2026', en: 'Graduation Night 2026' },
+    date: '26 Mei 2026',
+    pts: 5,
+    daftarHingga: '2026-06-10',
+    formLink: null
+  },
+  {
+    level: 'kolej',
+    lvlLabel: { ms: 'Peringkat Kolej', en: 'College Level' },
+    name: { ms: 'Piala Debat KPTM Bangi', en: 'KPTM Bangi Debate Cup' },
+    date: 'Jun 2026',
+    pts: 5,
+    daftarHingga: '2026-06-20',
+    formLink: null
+  },
+  {
+    level: 'negeri',
+    lvlLabel: { ms: 'Peringkat Negeri', en: 'State Level' },
+    name: { ms: 'SRN – Lawatan Rukun Negara', en: 'SRN – Rukun Negara Visit' },
+    date: 'Jun 2026',
+    pts: 8,
+    daftarHingga: '2026-06-15',
+    formLink: null
+  },
+  {
+    level: 'kebangsaan',
+    lvlLabel: { ms: 'Peringkat Kebangsaan', en: 'National Level' },
+    name: { ms: 'Konvensyen Pelajar KPTM Kebangsaan', en: 'KPTM National Student Convention' },
+    date: 'Jul 2026',
+    pts: 12,
+    daftarHingga: '2026-07-01',
+    formLink: null
+  },
+  {
+    level: 'antarabangsa',
+    lvlLabel: { ms: 'Peringkat Antarabangsa', en: 'International Level' },
+    name: { ms: 'ASEAN Polytechnic Seminar 2026', en: 'ASEAN Polytechnic Seminar 2026' },
+    date: 'Ogos 2026',
+    pts: 20,
+    daftarHingga: '2026-07-15',
+    formLink: null
+  },
 ];
+
+// Fungsi kira hari
+function hitungHari(tarikhTutup) {
+  if (!tarikhTutup) return null;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const tutup = new Date(tarikhTutup);
+  tutup.setHours(0,0,0,0);
+  return Math.ceil((tutup - today) / (1000 * 60 * 60 * 24));
+}
+
+function countdownHTML(hari, lang) {
+  if (hari === null) return '';
+  if (hari < 0) return `<span class="up-countdown closed">${lang==='ms'?'Pendaftaran Ditutup':'Registration Closed'}</span>`;
+  if (hari === 0) return `<span class="up-countdown urgent">${lang==='ms'?'Tutup Hari Ini!':'Closes Today!'}</span>`;
+  if (hari <= 3) return `<span class="up-countdown urgent">⚠️ ${hari} ${lang==='ms'?'hari lagi':'days left'}</span>`;
+  if (hari <= 7) return `<span class="up-countdown soon">⏳ ${hari} ${lang==='ms'?'hari lagi':'days left'}</span>`;
+  return `<span class="up-countdown normal">📅 ${hari} ${lang==='ms'?'hari lagi':'days left'}</span>`;
+}
 
 let lastStudent = null;
 
@@ -1003,14 +1105,27 @@ function renderResult(student) {
 
   // Upcoming
   const ug = document.getElementById('upcomingGrid');
-  ug.innerHTML = UPCOMING.map(u => `
-    <div class="upcoming-card ${u.level}">
-      <div class="up-level">${u.lvlLabel[lang]}</div>
-      <div class="up-name">${u.name[lang]}</div>
-      <div class="up-date">📅 ${u.date}</div>
-      <div class="up-pts">+${u.pts} ${t.pts}</div>
-    </div>
-  `).join('');
+  ug.innerHTML = UPCOMING.map(u => {
+    const hari = hitungHari(u.daftarHingga);
+    const isClosed = hari !== null && hari < 0;
+    const formBtn = u.formLink
+      ? `<a class="up-form-btn ${isClosed?'closed-btn':''}" href="${isClosed?'#':u.formLink}" target="${isClosed?'_self':'_blank'}">
+          📝 ${lang==='ms'?(isClosed?'Ditutup':'Daftar Sekarang'):(isClosed?'Closed':'Register Now')}
+         </a>`
+      : `<span class="up-form-btn closed-btn">🔗 ${lang==='ms'?'Form Belum Dibuka':'Form Not Open Yet'}</span>`;
+    return `
+      <div class="upcoming-card ${u.level}">
+        <div class="up-level">${u.lvlLabel[lang]}</div>
+        <div class="up-name">${u.name[lang]}</div>
+        <div class="up-date">📅 ${u.date}</div>
+        <div class="up-pts">+${u.pts} ${t.pts}</div>
+        <div class="up-footer">
+          ${countdownHTML(hari, lang)}
+          ${formBtn}
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function toggleCard(id) {
@@ -1018,4 +1133,4 @@ function toggleCard(id) {
 }
 </script>
 </body>
-</html>
+</html>		
