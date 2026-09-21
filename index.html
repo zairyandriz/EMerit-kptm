@@ -784,7 +784,7 @@ function exportPDF() {
   doc.setFontSize(18); doc.setFont('helvetica','bold');
   doc.text('SISTEM e-MERIT', 105, 12, { align: 'center' });
   doc.setFontSize(10); doc.setFont('helvetica','normal');
-  doc.text('Kolej Poly-Tech MARA Bangi · MPP 2025/2026', 105, 22, { align: 'center' });
+  doc.text('Kolej Poly-Tech MARA Bangi · MPP 2026/2027', 105, 22, { align: 'center' });
 
   // Student info
   doc.setTextColor(26, 26, 26);
@@ -851,7 +851,7 @@ function exportPDF() {
     doc.rect(0, 285, 210, 15, 'F');
     doc.setTextColor(255,255,255);
     doc.setFontSize(8);
-    doc.text('© 2026 Majlis Perwakilan Pelajar · Kolej Poly-Tech MARA Bangi', 105, 293, { align: 'center' });
+    doc.text('©Majlis Perwakilan Pelajar 26/27· Kolej Poly-Tech MARA Bangi', 105, 293, { align: 'center' });
   }
 
   doc.save(`eMerit_${document.getElementById('studentId').value.toUpperCase()}.pdf`);
